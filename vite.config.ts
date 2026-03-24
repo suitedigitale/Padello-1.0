@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(() => {
   return {
-    base: '/Padello/',
+    base: '/Padello-1.0/',
 
     server: {
       port: 3000,
