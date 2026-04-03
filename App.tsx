@@ -107,18 +107,30 @@ export const App: React.FC = () => {
   const [selectedAdminBooking, setSelectedAdminBooking] = useState<{ booking: Booking; court: Court; slot: TimeSlot } | null>(null);
   const [resultBookingId, setResultBookingId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const savedEmail = localStorage.getItem('padello_user_email');
-    const savedName = localStorage.getItem('padello_user_name');
-    if (savedEmail && savedName) {
-      handleLogin(savedEmail, savedName);
-      setShowIntro(false);
-      setShowForgotPassword(false);
-    }
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setIsDarkMode(true);
-    }
-  }, []);
+useEffect(() => {
+  const savedEmail = localStorage.getItem('padello_user_email');
+  const savedName = localStorage.getItem('padello_user_name');
+
+  if (savedEmail && savedName) {
+    handleLogin(savedEmail, savedName);
+    setShowIntro(false);
+    setShowForgotPassword(false);
+  }
+
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  setIsDarkMode(mediaQuery.matches);
+
+  const handleChange = (e: MediaQueryListEvent) => {
+    setIsDarkMode(e.matches);
+  };
+
+  mediaQuery.addEventListener('change', handleChange);
+
+  return () => {
+    mediaQuery.removeEventListener('change', handleChange);
+  };
+}, []);
 
   useEffect(() => {
     if (isDarkMode) {
