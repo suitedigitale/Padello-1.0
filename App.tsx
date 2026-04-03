@@ -117,28 +117,39 @@ useEffect(() => {
     setShowForgotPassword(false);
   }
 
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const savedTheme = localStorage.getItem('padello_theme');
 
-  setIsDarkMode(mediaQuery.matches);
+  if (savedTheme === 'dark') {
+    setIsDarkMode(true);
+  } else if (savedTheme === 'light') {
+    setIsDarkMode(false);
+  } else {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDarkMode(mediaQuery.matches);
 
-  const handleChange = (e: MediaQueryListEvent) => {
-    setIsDarkMode(e.matches);
-  };
+    const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsDarkMode('matches' in e ? e.matches : false);
+    };
 
-  mediaQuery.addEventListener('change', handleChange);
-
-  return () => {
-    mediaQuery.removeEventListener('change', handleChange);
-  };
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', handleChange as EventListener);
+      return () => mediaQuery.removeEventListener('change', handleChange as EventListener);
+    } else if (typeof mediaQuery.addListener === 'function') {
+      mediaQuery.addListener(handleChange as (this: MediaQueryList, ev: MediaQueryListEvent) => any);
+      return () => mediaQuery.removeListener(handleChange as (this: MediaQueryList, ev: MediaQueryListEvent) => any);
+    }
+  }
 }, []);
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
+useEffect(() => {
+  if (isDarkMode) {
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('padello_theme', 'dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('padello_theme', 'light');
+  }
+}, [isDarkMode]);
 
   const handleLogin = (email: string, name: string, role?: UserRole) => {
     const existingUser = allUsers.find((u) => u.email === email);
@@ -678,7 +689,7 @@ useEffect(() => {
         user={user}
         selectedClub={selectedClub}
         isDarkMode={isDarkMode}
-        toggleDarkMode={() => setIsDarkMode(!isDarkMode)}
+        toggleDarkMode={() => setIsDarkMode(prev => !prev)}
         onLogout={handleLogout}
         onMyBookingsClick={() => setCurrentView('bookings')}
         onAdminDashboardClick={() => setCurrentView('admin_dashboard')}
