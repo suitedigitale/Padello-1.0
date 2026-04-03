@@ -78,7 +78,7 @@ export const IntroSlide: React.FC<IntroSlideProps> = ({ onEnter }) => {
             className="h-14 text-lg shadow-lg shadow-orange-900/50 transition-all duration-300 hover:scale-[1.03] hover:shadow-orange-500/40 active:scale-[0.99]"
           >
             <div className="flex items-center justify-center gap-2">
-              <span>Scendi in Campo</span>
+              <span>SCENDI IN CAMPO</span>
               <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
             </div>
           </Button>
