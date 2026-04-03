@@ -24,13 +24,13 @@ export const IntroSlide: React.FC<IntroSlideProps> = ({ onEnter }) => {
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center max-w-md mx-auto w-full pt-20">
         {/* Logo/Badge */}
       <div className="mb-8 animate-in zoom-in duration-700 fade-in">
-  <div className="w-20 h-20 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto shadow-2xl shadow-orange-500/30">
-    <img
-      src={logoPadello}
-      alt="Padello"
-      className="w-full h-full object-contain p-3"
-    />
-  </div>
+  <div className="w-24 h-24 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto shadow-2xl shadow-orange-500/30 overflow-hidden">
+  <img
+    src={logoPadello}
+    alt="Padello"
+    className="w-[88%] h-[88%] object-contain scale-150"
+  />
+</div>
 </div>
 
         {/* Headlines */}
