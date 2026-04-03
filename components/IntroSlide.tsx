@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { Trophy, ArrowRight, Star } from 'lucide-react';
+import { ArrowRight, Star } from 'lucide-react';
 import { Button } from './Button';
+import logoPadello from '../Assets/Images/logo-padello.svg';
 
 interface IntroSlideProps {
   onEnter: () => void;
@@ -9,15 +10,15 @@ interface IntroSlideProps {
 
 export const IntroSlide: React.FC<IntroSlideProps> = ({ onEnter }) => {
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900 flex flex-col relative overflow-hidden">
+    <div className="fixed inset-0 z-50 min-h-screen bg-slate-950 flex flex-col relative overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
           src="https://images.unsplash.com/photo-1624896740635-c3f2d2595f51?q=80&w=1200&auto=format&fit=crop" 
           alt="Padel Court" 
-          className="w-full h-full object-cover opacity-50"
+          className="absolute inset-0 w-full h-full object-cover opacity-80"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-900/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950 to-slate-950/90" />
       </div>
 
       {/* Content */}
@@ -26,7 +27,7 @@ export const IntroSlide: React.FC<IntroSlideProps> = ({ onEnter }) => {
         {/* Logo/Badge */}
         <div className="mb-8 animate-in zoom-in duration-700 fade-in">
           <div className="w-20 h-20 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto shadow-2xl shadow-orange-500/30">
-            <Trophy size={40} className="text-white" />
+            <img src={logoPadello} alt="Padello" className="w-12 h-12 object-contain" />
           </div>
         </div>
 
