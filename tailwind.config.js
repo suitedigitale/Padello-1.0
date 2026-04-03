@@ -7,7 +7,12 @@ export default {
     "./**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        display: ['"Clash Display"', 'sans-serif'],
+        body: ['Roboto', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };
