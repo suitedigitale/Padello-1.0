@@ -1,17 +1,16 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 html, body, #root {
   min-height: 100%;
   background: #020617;
 }
 
-/* Base */
 body {
   margin: 0;
   font-family: Roboto, sans-serif;
 }
 
-/* TITOLI GLOBALI */
 h1, h2, h3, h4, h5, h6 {
   font-family: "Clash Display", sans-serif;
   letter-spacing: -0.02em;
