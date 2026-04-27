@@ -151,36 +151,43 @@ useEffect(() => {
   }
 }, [isDarkMode]);
 
-  const handleLogin = (email: string, name: string, role?: UserRole) => {
-    const existingUser = allUsers.find((u) => u.email === email);
-    let currentUser: User;
+const handleLogin = (email: string, name: string, role?: UserRole) => {
+  const existingUser = allUsers.find((u) => u.email === email);
+  let currentUser: User;
 
-    if (existingUser) {
-      currentUser = existingUser;
-    } else {
-      currentUser = {
-        id: email,
-        name: name,
-        email: email,
-        rating: 1.25,
-        ratingHistory: [1.0, 1.1, 1.25],
-        matchesPlayed: 0,
-        role: role || 'player',
-        hand: 'right',
-        side: 'indifferent',
-        preferredTime: 'evening',
-      };
-      setAllUsers((prev) => [...prev, currentUser]);
-    }
+  if (existingUser) {
+    currentUser = existingUser;
+  } else {
+    currentUser = {
+      id: email,
+      name: name,
+      email: email,
+      rating: 1.25,
+      ratingHistory: [1.0, 1.1, 1.25],
+      matchesPlayed: 0,
+      role: role || 'player',
+      hand: 'right',
+      side: 'indifferent',
+      preferredTime: 'evening',
 
-    setUser(currentUser);
-    CRMService.syncUser(currentUser);
+      frameworkAccountId: null,
+      crmContactId: null,
+      managedClubId: role === 'manager' ? null : undefined,
+      provider: 'email',
+      providerId: email,
+    } as User;
 
-    if (currentUser.role === 'manager' && currentUser.managedClubId) {
-      const managedClub = clubs.find((c) => c.id === currentUser.managedClubId);
-      if (managedClub) setSelectedClub(managedClub);
-    }
-  };
+    setAllUsers((prev) => [...prev, currentUser]);
+  }
+
+  setUser(currentUser);
+  CRMService.syncUser(currentUser);
+
+  if (currentUser.role === 'manager' && currentUser.managedClubId) {
+    const managedClub = clubs.find((c) => c.id === currentUser.managedClubId);
+    if (managedClub) setSelectedClub(managedClub);
+  }
+};
 
   const handleLogout = () => {
     setUser(null);
@@ -813,7 +820,7 @@ useEffect(() => {
         />
       )}
 
-      {isTournamentModalOpen && selectedClub && (
+            {isTournamentModalOpen && selectedClub && (
         <TournamentEditorModal
           tournament={editingTournament}
           clubId={selectedClub.id}
@@ -823,13 +830,22 @@ useEffect(() => {
           }}
           onSave={(data) => {
             if (data.id) {
-              setTournaments((prev) => prev.map((t) => (t.id === data.id ? { ...t, ...data, id: data.id! } : t)));
+              setTournaments((prev) =>
+                prev.map((t) => (t.id === data.id ? { ...t, ...data, id: data.id! } : t))
+              );
             } else {
               setTournaments((prev) => [
                 ...prev,
-                { ...data, id: Math.random().toString(36).substr(2, 9), teams: [], matches: [], status: 'open' },
+                {
+                  ...data,
+                  id: Math.random().toString(36).substr(2, 9),
+                  teams: [],
+                  matches: [],
+                  status: 'open',
+                },
               ]);
             }
+
             setIsTournamentModalOpen(false);
             setEditingTournament(undefined);
           }}

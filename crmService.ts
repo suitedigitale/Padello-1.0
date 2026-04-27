@@ -19,14 +19,50 @@ const logExternalAlert = (title: string, message: string) => {
 };
 
 export const CRMService = {
-  syncUser: async (user: User) => {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        logCRM('User Sync', { user });
-        resolve();
-      }, CRM_API_DELAY);
-    });
-  },
+syncUser: async (user: User) => {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      const crmPayload = {
+        event: 'padello_user_sync',
+        source: 'padello_app',
+
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          rating: user.rating,
+          matchesPlayed: user.matchesPlayed,
+          hand: user.hand,
+          side: user.side,
+          preferredTime: user.preferredTime,
+        },
+
+        framework: {
+          crmContactId: (user as any).crmContactId || null,
+          frameworkAccountId: (user as any).frameworkAccountId || null,
+          managedClubId: (user as any).managedClubId || null,
+        },
+
+        auth: {
+          provider: (user as any).provider || 'email',
+          providerId: (user as any).providerId || null,
+        },
+
+        routing: {
+          isPlayer: user.role === 'player',
+          isManager: user.role === 'manager',
+          isSuperAdmin: user.role === 'super_admin',
+        },
+
+        timestamp: new Date().toISOString(),
+      };
+
+      logCRM('User Sync / Framework360 Ready', crmPayload);
+      resolve();
+    }, CRM_API_DELAY);
+  });
+},
 
   syncNewBooking: async (booking: Booking) => {
     return new Promise<void>((resolve) => {
