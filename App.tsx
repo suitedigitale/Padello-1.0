@@ -676,10 +676,13 @@ useEffect(() => {
     }
 
     return (
-      <AuthForm
-        onLogin={handleLogin}
-        onForgotPassword={() => setShowForgotPassword(true)}
-      />
+     <AuthForm
+  onLogin={handleLogin}
+  onForgotPassword={() => setShowForgotPassword(true)}
+  onSocialLogin={(provider) => {
+    setToastMessage(`Login con ${provider} pronto per integrazione CRM`);
+  }}
+/>
     );
   }
 

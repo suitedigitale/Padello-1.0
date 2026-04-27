@@ -8,6 +8,7 @@ import logoPadello from '../Assets/Images/logo-padello.svg';
 interface AuthFormProps {
   onLogin: (email: string, name: string, role?: UserRole) => void;
   onForgotPassword?: () => void;
+  onSocialLogin?: (provider: 'google' | 'facebook') => void;
 }
 
 export const AuthForm: React.FC<AuthFormProps> = ({ onLogin, onForgotPassword }) => {
@@ -191,6 +192,34 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onLogin, onForgotPassword })
               <ArrowRight size={20} />
             </div>
           </Button>
+          <div className="relative py-2">
+  <div className="absolute inset-0 flex items-center">
+    <div className="w-full border-t border-slate-200 dark:border-slate-700" />
+  </div>
+  <div className="relative flex justify-center">
+    <span className="bg-white dark:bg-slate-800 px-4 text-[10px] font-black uppercase tracking-widest text-slate-400">
+      oppure continua con
+    </span>
+  </div>
+</div>
+
+<div className="grid grid-cols-2 gap-3">
+  <button
+    type="button"
+    onClick={() => onSocialLogin?.('google')}
+    className="h-12 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 font-black text-xs uppercase tracking-widest hover:border-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all"
+  >
+    Google
+  </button>
+
+  <button
+    type="button"
+    onClick={() => onSocialLogin?.('facebook')}
+    className="h-12 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 font-black text-xs uppercase tracking-widest hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+  >
+    Facebook
+  </button>
+</div>
         </form>
 
         <div className="mt-8 text-center border-t border-slate-50 dark:border-slate-700/50 pt-6">
