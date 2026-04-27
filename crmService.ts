@@ -18,50 +18,70 @@ const logExternalAlert = (title: string, message: string) => {
   console.groupEnd();
 };
 
+const FRAMEWORK360_CONTACTS_ENDPOINT =
+  'https://padello.framework360.site/m/api/customers/registration';
+
 export const CRMService = {
 syncUser: async (user: User) => {
-  return new Promise<void>((resolve) => {
-    setTimeout(() => {
-      const crmPayload = {
-        event: 'padello_user_sync',
-        source: 'padello_app',
+  const crmPayload = {
+    event: 'padello_user_sync',
+    source: 'padello_app',
 
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          rating: user.rating,
-          matchesPlayed: user.matchesPlayed,
-          hand: user.hand,
-          side: user.side,
-          preferredTime: user.preferredTime,
-        },
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      rating: user.rating,
+      matchesPlayed: user.matchesPlayed,
+      hand: user.hand,
+      side: user.side,
+      preferredTime: user.preferredTime,
+    },
 
-        framework: {
-          crmContactId: (user as any).crmContactId || null,
-          frameworkAccountId: (user as any).frameworkAccountId || null,
-          managedClubId: (user as any).managedClubId || null,
-        },
+    framework: {
+      crmContactId: (user as any).crmContactId || null,
+      frameworkAccountId: (user as any).frameworkAccountId || null,
+      managedClubId: (user as any).managedClubId || null,
+    },
 
-        auth: {
-          provider: (user as any).provider || 'email',
-          providerId: (user as any).providerId || null,
-        },
+    auth: {
+      provider: (user as any).provider || 'email',
+      providerId: (user as any).providerId || null,
+    },
 
-        routing: {
-          isPlayer: user.role === 'player',
-          isManager: user.role === 'manager',
-          isSuperAdmin: user.role === 'super_admin',
-        },
+    routing: {
+      isPlayer: user.role === 'player',
+      isManager: user.role === 'manager',
+      isSuperAdmin: user.role === 'super_admin',
+    },
 
-        timestamp: new Date().toISOString(),
-      };
+    timestamp: new Date().toISOString(),
+  };
 
-      logCRM('User Sync / Framework360 Ready', crmPayload);
-      resolve();
-    }, CRM_API_DELAY);
-  });
+  logCRM('User Sync / Framework360 Ready', crmPayload);
+
+  try {
+    const response = await fetch(FRAMEWORK360_CONTACTS_ENDPOINT, {
+      method: 'POST',
+      headers: {
+  'Content-Type': 'application/json',
+  Authorization: `Bearer ${FRAMEWORK360_API_KEY}`,
+},
+      body: JSON.stringify(crmPayload),
+    });
+
+    const data = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      console.error('[CRM Framework360] Sync failed', response.status, data);
+      return;
+    }
+
+    console.log('[CRM Framework360] Real Sync OK', data);
+  } catch (error) {
+    console.error('[CRM Framework360] Network error', error);
+  }
 },
 
   syncNewBooking: async (booking: Booking) => {
