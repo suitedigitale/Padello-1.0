@@ -19,21 +19,39 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onLogin, onForgotPassword })
   const [role, setRole] = useState<UserRole>('player');
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !password) return;
-    if (!isLogin && !name) return;
+ const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
 
-    onLogin(email, isLogin ? (name || email.split('@')[0]) : name, isLogin ? undefined : role);
+  if (!email || !password) return;
+  if (!isLogin && !name) return;
 
-    if (rememberMe) {
-      localStorage.setItem('padello_user_email', email);
-      localStorage.setItem('padello_user_name', isLogin ? (name || email.split('@')[0]) : name);
-    } else {
-      localStorage.removeItem('padello_user_email');
-      localStorage.removeItem('padello_user_name');
-    }
-  };
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const allowedTestEmails = [
+    'super@padello.it',
+    'milano@padello.it',
+    'test@padello.it'
+  ];
+
+  if (isLogin && !allowedTestEmails.includes(normalizedEmail)) {
+    alert('Account non riconosciuto. Usa un account autorizzato.');
+    return;
+  }
+
+  onLogin(
+    normalizedEmail,
+    isLogin ? (name || normalizedEmail.split('@')[0]) : name,
+    isLogin ? undefined : role
+  );
+
+  if (rememberMe) {
+    localStorage.setItem('padello_user_email', normalizedEmail);
+    localStorage.setItem('padello_user_name', isLogin ? (name || normalizedEmail.split('@')[0]) : name);
+  } else {
+    localStorage.removeItem('padello_user_email');
+    localStorage.removeItem('padello_user_name');
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-4 transition-colors duration-200">
