@@ -11,7 +11,11 @@ interface AuthFormProps {
   onSocialLogin?: (provider: 'google' | 'facebook') => void;
 }
 
-export const AuthForm: React.FC<AuthFormProps> = ({ onLogin, onForgotPassword }) => {
+export const AuthForm: React.FC<AuthFormProps> = ({
+  onLogin,
+  onForgotPassword,
+  onSocialLogin,
+}) => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
