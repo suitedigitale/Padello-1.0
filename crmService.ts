@@ -18,9 +18,6 @@ const logExternalAlert = (title: string, message: string) => {
   console.groupEnd();
 };
 
-const FRAMEWORK360_CONTACTS_ENDPOINT =
-'https://padello-ak2awkoc2-guidos-projects-ba7a06d1.vercel.app/api/sync-user';
-
 export const CRMService = {
 syncUser: async (user: User) => {
   const crmPayload = {
@@ -62,18 +59,12 @@ syncUser: async (user: User) => {
   logCRM('User Sync / Framework360 Ready', crmPayload);
 
   try {
-const response = await fetch(FRAMEWORK360_CONTACTS_ENDPOINT, {
+const response = await fetch('https://padello-api.vercel.app/api/sync-user', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
   },
-  body: JSON.stringify({
-    nome: user.name,
-    cognome: '',
-    email: user.email,
-    password: 'Temp123!',
-    provenienza: 6,
-  }),
+  body: JSON.stringify(crmPayload),
 });
 
     const data = await response.json().catch(() => null);
