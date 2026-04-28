@@ -19,7 +19,7 @@ const logExternalAlert = (title: string, message: string) => {
 };
 
 const FRAMEWORK360_CONTACTS_ENDPOINT =
-'https://padello-hr6ihvsdn-guidos-projects-ba7a06d1.vercel.app/api/sync-user';
+'https://padello-ak2awkoc2-guidos-projects-ba7a06d1.vercel.app/api/sync-user';
 
 export const CRMService = {
 syncUser: async (user: User) => {
@@ -65,7 +65,7 @@ syncUser: async (user: User) => {
 const response = await fetch(FRAMEWORK360_CONTACTS_ENDPOINT, {
   method: 'POST',
   headers: {
-    'Content-Type': 'text/plain;charset=UTF-8',
+    'Content-Type': 'application/json',
   },
   body: JSON.stringify({
     nome: user.name,
