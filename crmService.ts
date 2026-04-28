@@ -18,8 +18,8 @@ const logExternalAlert = (title: string, message: string) => {
   console.groupEnd();
 };
 
-const FRAMEWORK360_CONTACTS_ENDPOINT =
-  'https://padello.framework360.site/m/api/customers/registration';
+const FRAMEWORK360_PROXY_ENDPOINT =
+  'https://padello-c35rarybd-guidos-projects-ba7a06d1.vercel.app/api/sync-user';
 
 export const CRMService = {
 syncUser: async (user: User) => {
