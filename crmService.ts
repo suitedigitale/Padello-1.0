@@ -62,14 +62,19 @@ syncUser: async (user: User) => {
   logCRM('User Sync / Framework360 Ready', crmPayload);
 
   try {
-    const response = await fetch(FRAMEWORK360_CONTACTS_ENDPOINT, {
-      method: 'POST',
-      headers: {
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${FRAMEWORK360_API_KEY}`,
-},
-      body: JSON.stringify(crmPayload),
-    });
+ const response = await fetch(FRAMEWORK360_CONTACTS_ENDPOINT, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    nome: user.name,
+    cognome: '',
+    email: user.email,
+    password: 'Temp123!',
+    provenienza: 6,
+  }),
+});
 
     const data = await response.json().catch(() => null);
 
