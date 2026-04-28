@@ -78,11 +78,21 @@ export const Header: React.FC<HeaderProps> = ({
                 )}
               </div>
 
-              <div className="relative group" onClick={onEditProfile}>
-                <button className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800 overflow-hidden">
-                  <UserIcon size={20} />
-                </button>
-              </div>
+<div className="relative group" onClick={onEditProfile}>
+  <button className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800 overflow-hidden">
+
+    {user.avatar ? (
+      <img
+        src={user.avatar}
+        alt={user.name}
+        className="w-full h-full object-cover"
+      />
+    ) : (
+      <UserIcon size={20} />
+    )}
+
+  </button>
+</div>
             </div>
           )}
 

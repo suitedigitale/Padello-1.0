@@ -132,9 +132,30 @@ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         <div className="p-8 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/30">
           <div className="flex items-center gap-5">
             <div className="relative">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-[2rem] bg-orange-500 flex items-center justify-center text-white shadow-xl shadow-orange-500/20 rotate-3">
-                <UserIcon size={36} className="-rotate-3" />
-              </div>
+<label className="cursor-pointer group block relative">
+  <div className="w-16 h-16 md:w-20 md:h-20 rounded-[2rem] bg-orange-500 flex items-center justify-center text-white shadow-xl shadow-orange-500/20 rotate-3 overflow-hidden">
+    {avatar ? (
+      <img
+        src={avatar}
+        alt={user.name}
+        className="w-full h-full object-cover -rotate-3 scale-110"
+      />
+    ) : (
+      <UserIcon size={36} className="-rotate-3" />
+    )}
+  </div>
+
+  <div className="absolute inset-0 rounded-[2rem] bg-black/45 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[10px] font-black uppercase tracking-widest transition">
+    Cambia
+  </div>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={handleImageUpload}
+    className="hidden"
+  />
+</label>
               <div className="absolute -bottom-2 -right-2 bg-indigo-600 text-white p-2 rounded-xl border-4 border-white dark:border-slate-900 shadow-lg" title="Power Score">
                  <Zap size={16} fill="currentColor" />
               </div>
