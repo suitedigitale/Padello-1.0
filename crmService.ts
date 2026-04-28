@@ -19,7 +19,7 @@ const logExternalAlert = (title: string, message: string) => {
 };
 
 const FRAMEWORK360_CONTACTS_ENDPOINT =
-  'https://padello-akgssiphc-guidos-projects-ba7a06d1.vercel.app/api/sync-user';
+  'https://padello-levf67uvx-guidos-projects-ba7a06d1.vercel.app/api/sync-user';
 
 export const CRMService = {
 syncUser: async (user: User) => {
