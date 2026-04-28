@@ -21,6 +21,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, bookings, onCl
   const [hand, setHand] = useState<PlayerHand>(user.hand || 'right');
   const [side, setSide] = useState<CourtSide>(user.side || 'indifferent');
   const [preferredTime, setPreferredTime] = useState<PreferredTime>(user.preferredTime || 'evening');
+  const [avatar, setAvatar] = useState<string | undefined>(user.avatar);
 
   const isAdmin = user.role === 'super_admin' || user.role === 'manager';
 
@@ -62,14 +63,29 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, bookings, onCl
   }, [currentRating, stats.total, side, hand]);
 
   const handleSave = () => {
-    onSave({
-      rating: currentRating,
-      hand,
-      side,
-      preferredTime,
-      ratingHistory // Sync back the simulated history
-    });
+  onSave({
+    rating: currentRating,
+    hand,
+    side,
+    preferredTime,
+    ratingHistory,
+    avatar,
+  });
+};
+
+const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    const base64 = reader.result as string;
+    setAvatar(base64);
   };
+
+  reader.readAsDataURL(file);
+};
 
   // --- SVG Chart Configuration ---
   const chartWidth = 500;

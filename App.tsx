@@ -777,11 +777,19 @@ const handleLogin = (email: string, name: string, role?: UserRole) => {
           user={user}
           bookings={bookings}
           onClose={() => setIsProfileModalOpen(false)}
-          onSave={(f) => {
-            setUser((u) => (u ? { ...u, ...f } : null));
-            setIsProfileModalOpen(false);
-            setToastMessage('Profilo aggiornato!');
-          }}
+       onSave={(f) => {
+  setUser(u => {
+    if (!u) return null;
+
+    const updatedUser = { ...u, ...f };
+    localStorage.setItem('padello_current_user', JSON.stringify(updatedUser));
+
+    return updatedUser;
+  });
+
+  setIsProfileModalOpen(false);
+  setToastMessage("Profilo aggiornato!");
+}}
         />
       )}
 

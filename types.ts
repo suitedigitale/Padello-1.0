@@ -69,6 +69,7 @@ export interface User {
   hand?: PlayerHand;
   side?: CourtSide;
   preferredTime?: PreferredTime;
+  avatar?: string;
 }
 
 export interface Court {
