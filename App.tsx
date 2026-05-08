@@ -156,16 +156,12 @@ useEffect(() => {
 
     CRMService.syncUser(frameworkUser);
 
-    if (frameworkUser.role === 'manager') {
+if (frameworkUser.role === 'manager') {
+  const managedClub =
+    clubs.find((c) => c.id === frameworkUser.managedClubId) || clubs[0];
 
-  if (frameworkUser.managedClubId) {
-    const managedClub = clubs.find(
-      (c) => c.id === frameworkUser.managedClubId
-    );
-
-    if (managedClub) {
-      setSelectedClub(managedClub);
-    }
+  if (managedClub) {
+    setSelectedClub(managedClub);
   }
 
   setCurrentView('admin_dashboard');
