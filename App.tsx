@@ -156,10 +156,20 @@ useEffect(() => {
 
     CRMService.syncUser(frameworkUser);
 
-    if (frameworkUser.role === 'manager' && frameworkUser.managedClubId) {
-      const managedClub = clubs.find((c) => c.id === frameworkUser.managedClubId);
-      if (managedClub) setSelectedClub(managedClub);
+    if (frameworkUser.role === 'manager') {
+
+  if (frameworkUser.managedClubId) {
+    const managedClub = clubs.find(
+      (c) => c.id === frameworkUser.managedClubId
+    );
+
+    if (managedClub) {
+      setSelectedClub(managedClub);
     }
+  }
+
+  setCurrentView('admin_dashboard');
+}
 
     localStorage.setItem('padello_current_user', JSON.stringify(frameworkUser));
     setShowIntro(false);
