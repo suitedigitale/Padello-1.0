@@ -107,14 +107,77 @@ export const App: React.FC = () => {
   const [selectedAdminBooking, setSelectedAdminBooking] = useState<{ booking: Booking; court: Court; slot: TimeSlot } | null>(null);
   const [resultBookingId, setResultBookingId] = useState<string | null>(null);
 
-useEffect(() => {
-  const savedEmail = localStorage.getItem('padello_user_email');
-  const savedName = localStorage.getItem('padello_user_name');
+  const getFrameworkUserFromUrl = (): User | null => {
+  const params = new URLSearchParams(window.location.search);
 
-  if (savedEmail && savedName) {
-    handleLogin(savedEmail, savedName);
+  const email = params.get('fw_email');
+  const name = params.get('fw_name');
+  const roleParam = params.get('fw_role') as UserRole | null;
+  const crmContactId = params.get('fw_contact_id');
+  const frameworkAccountId = params.get('fw_account_id');
+  const managedClubId = params.get('fw_club_id');
+
+  if (!email || !name) return null;
+
+  const role: UserRole =
+    roleParam === 'manager' || roleParam === 'super_admin' || roleParam === 'player'
+      ? roleParam
+      : 'player';
+
+  return {
+    id: email.toLowerCase(),
+    name,
+    email: email.toLowerCase(),
+    rating: 1.25,
+    ratingHistory: [1.0, 1.1, 1.25],
+    matchesPlayed: 0,
+    role,
+    hand: 'right',
+    side: 'indifferent',
+    preferredTime: 'evening',
+
+    frameworkAccountId: frameworkAccountId || null,
+    crmContactId: crmContactId || null,
+    managedClubId: managedClubId || undefined,
+    provider: 'framework',
+    providerId: crmContactId || email.toLowerCase(),
+  } as User;
+};
+
+useEffect(() => {
+  const frameworkUser = getFrameworkUserFromUrl();
+
+  if (frameworkUser) {
+    setUser(frameworkUser);
+    setAllUsers((prev) => {
+      const exists = prev.some((u) => u.email === frameworkUser.email);
+      return exists ? prev : [...prev, frameworkUser];
+    });
+
+    CRMService.syncUser(frameworkUser);
+
+    if (frameworkUser.role === 'manager' && frameworkUser.managedClubId) {
+      const managedClub = clubs.find((c) => c.id === frameworkUser.managedClubId);
+      if (managedClub) setSelectedClub(managedClub);
+    }
+
+    localStorage.setItem('padello_current_user', JSON.stringify(frameworkUser));
     setShowIntro(false);
     setShowForgotPassword(false);
+    return;
+  }
+
+  const savedUser = localStorage.getItem('padello_current_user');
+
+  if (savedUser) {
+    try {
+      const parsedUser = JSON.parse(savedUser) as User;
+      setUser(parsedUser);
+      setShowIntro(false);
+      setShowForgotPassword(false);
+    } catch {
+      localStorage.removeItem('padello_current_user');
+    }
   }
 
   const savedTheme = localStorage.getItem('padello_theme');
@@ -197,6 +260,7 @@ const handleLogin = (email: string, name: string, role?: UserRole) => {
     setShowForgotPassword(false);
     localStorage.removeItem('padello_user_email');
     localStorage.removeItem('padello_user_name');
+    localStorage.removeItem('padello_current_user');
   };
 
   const handleChatEmergency = (message: string) => {
