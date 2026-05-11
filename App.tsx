@@ -117,17 +117,18 @@ export const App: React.FC = () => {
   const frameworkAccountId = params.get('fw_account_id');
   const managedClubId = params.get('fw_club_id');
 
-  if (!email || !name) return null;
+const hasFrameworkAccess = params.has('fw_role');
 
+if (!hasFrameworkAccess) return null;
   const role: UserRole =
     roleParam === 'manager' || roleParam === 'super_admin' || roleParam === 'player'
       ? roleParam
       : 'player';
 
   return {
-    id: email.toLowerCase(),
-    name,
-    email: email.toLowerCase(),
+id: (email || `framework-${role}-${Date.now()}`).toLowerCase(),
+name: name || (role === 'manager' ? 'Gestore Padello' : 'Giocatore Padello'),
+email: (email || '').toLowerCase(),
     rating: 1.25,
     ratingHistory: [1.0, 1.1, 1.25],
     matchesPlayed: 0,
@@ -247,8 +248,13 @@ const handleLogin = (email: string, name: string, role?: UserRole) => {
     setAllUsers((prev) => [...prev, currentUser]);
   }
 
-  setUser(currentUser);
-  CRMService.syncUser(currentUser);
+setUser(currentUser);
+
+localStorage.setItem('padello_current_user', JSON.stringify(currentUser));
+localStorage.setItem('padello_user_email', currentUser.email);
+localStorage.setItem('padello_user_name', currentUser.name);
+
+CRMService.syncUser(currentUser);
 
   if (currentUser.role === 'manager' && currentUser.managedClubId) {
     const managedClub = clubs.find((c) => c.id === currentUser.managedClubId);
