@@ -141,8 +141,7 @@ email: (email || '').toLowerCase(),
     crmContactId: crmContactId || null,
     managedClubId: managedClubId || undefined,
     provider: 'framework',
-    providerId: crmContactId || email.toLowerCase(),
-  } as User;
+providerId: crmContactId || (email || `framework-${role}-${Date.now()}`).toLowerCase(),  } as User;
 };
 
 useEffect(() => {
