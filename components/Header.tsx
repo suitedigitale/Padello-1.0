@@ -67,16 +67,27 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-2 sm:gap-4">
           {user && (
             <div className="flex items-center gap-3">
-              <div className="hidden md:flex flex-col items-end">
-                <span className="text-xs font-black text-slate-900 dark:text-white leading-none">
-                  {user.name}
-                </span>
-                {levelMeta && (
-                  <span className={`text-[8px] font-black uppercase tracking-tighter ${levelMeta.text}`}>
-                    {levelMeta.label}
-                  </span>
-                )}
-              </div>
+<div className="hidden md:flex flex-col items-end">
+  <span className="text-xs font-black text-slate-900 dark:text-white leading-none">
+    {user.name}
+  </span>
+
+  <span
+    className={`text-[8px] font-black uppercase tracking-tighter ${
+      user.role === 'manager'
+        ? 'text-orange-500'
+        : user.role === 'super_admin'
+          ? 'text-violet-500'
+          : levelMeta?.text || 'text-slate-400'
+    }`}
+  >
+    {user.role === 'manager'
+      ? 'Gestore'
+      : user.role === 'super_admin'
+        ? 'Super Admin'
+        : levelMeta?.label}
+  </span>
+</div>
 
 <div className="relative group" onClick={onEditProfile}>
   <button className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800 overflow-hidden">
