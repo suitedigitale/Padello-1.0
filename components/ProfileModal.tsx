@@ -1,8 +1,8 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { 
-  X, Save, TrendingUp, Hand, Sun, Moon, Sunrise, 
-  Activity, Trophy, Shield, User as UserIcon, 
+import {
+  X, Save, TrendingUp, Hand, Sun, Moon, Sunrise,
+  Activity, Trophy, Shield, User as UserIcon,
   Target, Award, Users, Zap, Clock, MousePointer2,
   Sword, ShieldHalf, ChevronRight
 } from 'lucide-react';
@@ -21,6 +21,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, bookings, onCl
   const [hand, setHand] = useState<PlayerHand>(user.hand || 'right');
   const [side, setSide] = useState<CourtSide>(user.side || 'indifferent');
   const [preferredTime, setPreferredTime] = useState<PreferredTime>(user.preferredTime || 'evening');
+  const [name, setName] = useState(user.name || '');
+  const [email, setEmail] = useState(user.email || '');
   const [avatar, setAvatar] = useState<string | undefined>(user.avatar);
 
   const isAdmin = user.role === 'super_admin' || user.role === 'manager';
@@ -30,14 +32,14 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, bookings, onCl
     const userMatches = bookings.filter(b => b.userId === user.id && b.result);
     const wins = userMatches.filter(b => b.result?.outcome === 'won').length;
     const losses = userMatches.filter(b => b.result?.outcome === 'lost').length;
-    
+
     // Base rating from user profile
     let calculated = user.rating;
-    
+
     // Simulate real-time adjustment based on results
     // Each win adds 0.05, each loss subtracts 0.02
     calculated = calculated + (wins * 0.05) - (losses * 0.02);
-    
+
     // Generate a more interesting history based on these results
     const history = [...(user.ratingHistory || [])];
     if (history.length < 4) {
@@ -47,7 +49,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, bookings, onCl
     // Add current calculated as last point
     history.push(calculated);
 
-    return { 
+    return {
         currentRating: calculated,
         stats: { wins, losses, total: userMatches.length },
         ratingHistory: history.slice(-8) // Take last 8 points
@@ -56,8 +58,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, bookings, onCl
 
   const powerScore = useMemo(() => {
     const base = currentRating * 10;
-    const experienceBonus = Math.min(stats.total * 0.2, 10); 
-    const specializationBonus = side !== 'indifferent' ? 5 : 2; 
+    const experienceBonus = Math.min(stats.total * 0.2, 10);
+    const specializationBonus = side !== 'indifferent' ? 5 : 2;
     const handBonus = hand === 'left' ? 3 : 1; // Lefties have a tactical advantage
     return Math.min(100, (base + experienceBonus + specializationBonus + handBonus)).toFixed(1);
   }, [currentRating, stats.total, side, hand]);
@@ -127,7 +129,7 @@ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
   return (
     <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-300">
       <div className="bg-white dark:bg-slate-900 w-full max-w-4xl rounded-[3rem] shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden animate-in zoom-in-95 duration-300 max-h-[92vh] flex flex-col">
-        
+
         {/* Header Section */}
         <div className="p-8 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/30">
           <div className="flex items-center gap-5">
@@ -183,7 +185,7 @@ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 
         <div className="flex-1 overflow-y-auto no-scrollbar p-8 md:p-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            
+
             {/* Left Column: Analytics */}
             <div className="space-y-10">
               <section>
@@ -260,7 +262,7 @@ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
                   <Shield size={18} className="text-indigo-500" />
                   Assetto Tattico
                 </h3>
-                
+
                 <div className="space-y-8">
                   {/* Visual Hand Selection */}
                   <div className="space-y-3">
