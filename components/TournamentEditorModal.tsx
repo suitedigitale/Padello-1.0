@@ -82,12 +82,12 @@ export const TournamentEditorModal: React.FC<TournamentEditorModalProps> = ({ to
             <div className="grid grid-cols-2 gap-4">
                <div className="space-y-1">
                   <span className="text-[8px] text-slate-400 font-black uppercase text-center block">Min</span>
-                  <input type="number" step="0.1" min="1.0" max="7.0" value={minRating} onChange={(e) => setMinRating(Number(e.target.value))} className="w-full bg-white dark:bg-slate-800 border rounded-xl px-3 py-3 text-center font-mono font-black shadow-sm" />
+                  <input type="number" step="0.1" min="1.0" max="7.0" value={minRating} onChange={(e) => setMinRating(Number(e.target.value))} className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-3 text-center font-mono font-black text-slate-900 dark:text-white shadow-sm"/>
                   <div className="text-[8px] font-black text-orange-500 uppercase text-center mt-1 truncate">{getLevelDescription(minRating)}</div>
                </div>
                <div className="space-y-1">
                   <span className="text-[8px] text-slate-400 font-black uppercase text-center block">Max</span>
-                  <input type="number" step="0.1" min="1.0" max="7.0" value={maxRating} onChange={(e) => setMaxRating(Number(e.target.value))} className="w-full bg-white dark:bg-slate-800 border rounded-xl px-3 py-3 text-center font-mono font-black shadow-sm" />
+                  <input type="number" step="0.1" min="1.0" max="7.0" value={maxRating} onChange={(e) => setMaxRating(Number(e.target.value))} className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-3 text-center font-mono font-black text-slate-900 dark:text-white shadow-sm"/>
                   <div className="text-[8px] font-black text-indigo-500 uppercase text-center mt-1 truncate">{getLevelDescription(maxRating)}</div>
                </div>
             </div>
