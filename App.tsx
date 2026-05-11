@@ -107,28 +107,31 @@ export const App: React.FC = () => {
   const [selectedAdminBooking, setSelectedAdminBooking] = useState<{ booking: Booking; court: Court; slot: TimeSlot } | null>(null);
   const [resultBookingId, setResultBookingId] = useState<string | null>(null);
 
-  const getFrameworkUserFromUrl = (): User | null => {
+ const getFrameworkUserFromUrl = (): User | null => {
   const params = new URLSearchParams(window.location.search);
 
-  const email = params.get('fw_email');
-  const name = params.get('fw_name');
+  const emailParam = params.get('fw_email');
+  const nameParam = params.get('fw_name');
   const roleParam = params.get('fw_role') as UserRole | null;
   const crmContactId = params.get('fw_contact_id');
   const frameworkAccountId = params.get('fw_account_id');
   const managedClubId = params.get('fw_club_id');
 
-const hasFrameworkAccess = params.has('fw_role');
+  if (!params.has('fw_role')) return null;
 
-if (!hasFrameworkAccess) return null;
   const role: UserRole =
     roleParam === 'manager' || roleParam === 'super_admin' || roleParam === 'player'
       ? roleParam
       : 'player';
 
+  const safeEmail = emailParam ? emailParam.toLowerCase() : '';
+  const safeName = nameParam || (role === 'manager' ? 'Gestore Padello' : 'Giocatore Padello');
+  const safeId = safeEmail || `framework-${role}-${Date.now()}`;
+
   return {
-id: (email || `framework-${role}-${Date.now()}`).toLowerCase(),
-name: name || (role === 'manager' ? 'Gestore Padello' : 'Giocatore Padello'),
-email: (email || '').toLowerCase(),
+    id: safeId,
+    name: safeName,
+    email: safeEmail,
     rating: 1.25,
     ratingHistory: [1.0, 1.1, 1.25],
     matchesPlayed: 0,
@@ -141,7 +144,8 @@ email: (email || '').toLowerCase(),
     crmContactId: crmContactId || null,
     managedClubId: managedClubId || undefined,
     provider: 'framework',
-providerId: crmContactId || (email || `framework-${role}-${Date.now()}`).toLowerCase(),  } as User;
+    providerId: crmContactId || safeId,
+  } as User;
 };
 
 useEffect(() => {
