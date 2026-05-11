@@ -151,11 +151,17 @@ export const App: React.FC = () => {
 useEffect(() => {
   const frameworkUser = getFrameworkUserFromUrl();
 
-  if (frameworkUser) {
-    setUser(frameworkUser);
-    if (!frameworkUser.email || frameworkUser.name === 'Giocatore Padello') {
-  setIsProfileModalOpen(true);
-}
+if (frameworkUser) {
+  setUser(frameworkUser);
+
+  const needsProfileCompletion =
+    !frameworkUser.email || frameworkUser.name === 'Giocatore Padello';
+
+  if (needsProfileCompletion) {
+    setTimeout(() => {
+      setIsProfileModalOpen(true);
+    }, 300);
+  }
     setAllUsers((prev) => {
       const exists = prev.some((u) => u.email === frameworkUser.email);
       return exists ? prev : [...prev, frameworkUser];
