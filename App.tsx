@@ -153,6 +153,9 @@ useEffect(() => {
 
   if (frameworkUser) {
     setUser(frameworkUser);
+    if (!frameworkUser.email || frameworkUser.name === 'Giocatore Padello') {
+  setIsProfileModalOpen(true);
+}
     setAllUsers((prev) => {
       const exists = prev.some((u) => u.email === frameworkUser.email);
       return exists ? prev : [...prev, frameworkUser];
