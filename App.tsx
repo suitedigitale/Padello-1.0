@@ -154,8 +154,6 @@ useEffect(() => {
       return exists ? prev : [...prev, frameworkUser];
     });
 
-    CRMService.syncUser(frameworkUser);
-
 if (frameworkUser.role === 'manager') {
   const managedClub =
     clubs.find((c) => c.id === frameworkUser.managedClubId) || clubs[0];
