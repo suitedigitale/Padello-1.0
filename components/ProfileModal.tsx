@@ -65,14 +65,15 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, bookings, onCl
   }, [currentRating, stats.total, side, hand]);
 
   const handleSave = () => {
-  onSave({
-    rating: currentRating,
-    hand,
-    side,
-    preferredTime,
-    ratingHistory,
-    avatar,
-  });
+onSave({
+  name,
+  email,
+  rating: currentRating,
+  hand,
+  side,
+  preferredTime,
+  ratingHistory
+});
 };
 
 const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
