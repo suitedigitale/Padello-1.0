@@ -772,8 +772,13 @@ const handleLogin = (email: string, name: string, role?: UserRole) => {
         toggleDarkMode={() => setIsDarkMode(prev => !prev)}
         onLogout={handleLogout}
         onMyBookingsClick={() => setCurrentView('bookings')}
-        onAdminDashboardClick={() => setCurrentView('admin_dashboard')}
-        onEditProfile={() => setIsProfileModalOpen(true)}
+onAdminDashboardClick={() => {
+  if (!selectedClub && clubs.length > 0) {
+    setSelectedClub(clubs[0]);
+  }
+
+  setCurrentView('admin_dashboard');
+}}        onEditProfile={() => setIsProfileModalOpen(true)}
         onSwitchClub={() => setSelectedClub(null)}
         playerNotifications={playerNotifications}
         onMarkNotificationAsRead={() => {}}
