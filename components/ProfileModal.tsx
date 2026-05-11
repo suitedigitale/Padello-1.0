@@ -183,7 +183,33 @@ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
             </button>
           </div>
         </div>
+<div className="px-8 md:px-12 pt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">
+      Nome profilo
+    </label>
+    <input
+      type="text"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-4 font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-orange-500"
+      placeholder="Inserisci il tuo nome"
+    />
+  </div>
 
+  <div>
+    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">
+      Email
+    </label>
+    <input
+      type="email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-4 font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-orange-500"
+      placeholder="Inserisci la tua email"
+    />
+  </div>
+</div>
         <div className="flex-1 overflow-y-auto no-scrollbar p-8 md:p-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
