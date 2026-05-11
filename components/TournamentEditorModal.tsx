@@ -6,7 +6,7 @@ import { Tournament } from '../types';
 import { getLevelDescription } from '../constants';
 
 interface TournamentEditorModalProps {
-  tournament?: Tournament; 
+  tournament?: Tournament;
   clubId: string;
   onClose: () => void;
   onSave: (tournamentData: any) => void;
@@ -49,8 +49,8 @@ export const TournamentEditorModal: React.FC<TournamentEditorModalProps> = ({ to
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-slate-800 w-full max-w-sm rounded-[2.5rem] p-8 shadow-xl border border-slate-200 dark:border-slate-700 animate-in zoom-in-95 duration-200 max-h-[95vh] overflow-y-auto no-scrollbar">
+<div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
+  <div className="relative z-[310] bg-white dark:bg-slate-800 w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl border border-slate-200 dark:border-slate-700 animate-in zoom-in-95 duration-200 max-h-[88vh] overflow-y-auto no-scrollbar">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h2 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 tracking-tighter">
@@ -103,7 +103,7 @@ export const TournamentEditorModal: React.FC<TournamentEditorModalProps> = ({ to
               ))}
             </div>
           </div>
-          
+
           <Button type="submit" fullWidth className="h-16 rounded-2xl text-lg shadow-2xl shadow-orange-500/20 active:scale-95">
              <Save size={24} className="mr-2" /> <span className="font-black uppercase tracking-widest">Crea Arena</span>
           </Button>
